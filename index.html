@@ -1,20 +1,79 @@
-<script>
-  // Get button and message elements
-  const button = document.getElementById("verifyBtn");
-  const message = document.getElementById("message");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kermify Verification 🐸</title>
+  <style>
+    body {
+      background-color: #4CAF50; /* Frog green */
+      color: #ffff99; /* Light yellow text */
+      font-family: 'Comic Sans MS', sans-serif;
+      text-align: center;
+      padding-top: 50px;
+      margin: 0;
+    }
 
-  // When the button is clicked
-  button.addEventListener("click", () => {
-    // Get username and password inputs
-    const user = document.getElementById("username").value || "Player";
-    const pass = document.getElementById("password").value || "Code";
+    h1 {
+      font-size: 3em;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px #2e7d32;
+    }
 
-    // Always verify, no matter what they typed
-    message.textContent = `✅ ${user} has verified with password "${pass}"! Ribbit! 🐸`;
-  });
-</script>
+    .input-field {
+      padding: 12px;
+      margin: 10px 5px;
+      font-size: 1.2em;
+      border-radius: 5px;
+      border: none;
+      width: 200px;
+      box-sizing: border-box;
+    }
 
-<input id="username" placeholder="Enter your username">
-<input id="password" type="password" placeholder="Enter password">
-<button id="verifyBtn">Verify</button>
-<p id="message"></p>
+    #verifyBtn {
+      padding: 12px 25px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 8px;
+      background-color: #ffeb3b; /* yellow button */
+      color: #2e7d32;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: 0.2s;
+    }
+
+    #verifyBtn:hover {
+      background-color: #fdd835;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 1.5em;
+      min-height: 1.5em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kermify Verification 🐸</h1>
+
+  <input id="username" class="input-field" placeholder="Enter your username">
+  <input id="password" class="input-field" type="password" placeholder="Enter password">
+  <br>
+  <button id="verifyBtn">Verify</button>
+
+  <p id="message"></p>
+
+  <script>
+    // Frog Verify Script
+    const button = document.getElementById("verifyBtn");
+    const message = document.getElementById("message");
+
+    button.addEventListener("click", () => {
+      const user = document.getElementById("username").value || "Player";
+      const pass = document.getElementById("password").value || "Code";
+
+      // Always verified, show username and password
+      message.textContent = `✅ ${user} has verified with password "${pass}"! Ribbit! 🐸`;
+    });
+  </script>
+</body>
+</html>
