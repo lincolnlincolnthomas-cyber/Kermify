@@ -50,10 +50,26 @@
       font-size: 1.5em;
       min-height: 1.5em;
     }
+
+    /* Bouncing frog animation */
+    #frog {
+      font-size: 4em;
+      display: inline-block;
+      animation: bounce 1s infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
   </style>
 </head>
 <body>
   <h1>Kermify Verification 🐸</h1>
+
+  <!-- Bouncing frog emoji -->
+  <div id="frog">🐸</div>
 
   <input id="username" class="input-field" placeholder="Enter your username">
   <input id="password" class="input-field" type="password" placeholder="Enter password">
