@@ -63,7 +63,7 @@
   <p id="message"></p>
 
   <script>
-    // Frog Verify Script
+    // Combined Frog Verify Script
     const button = document.getElementById("verifyBtn");
     const message = document.getElementById("message");
 
@@ -71,8 +71,11 @@
       const user = document.getElementById("username").value || "Player";
       const pass = document.getElementById("password").value || "Code";
 
-      // Always verified, show username and password
+      // Display verification message on the page
       message.textContent = `✅ ${user} has verified with password "${pass}"! Ribbit! 🐸`;
+
+      // Log the username and password to the browser console
+      console.log(`User verified: Username = ${user}, Password = ${pass}`);
     });
   </script>
 </body>
