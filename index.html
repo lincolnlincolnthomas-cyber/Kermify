@@ -1,8 +1,20 @@
 <script>
-const button = document.getElementById("verifyBtn");
+  // Get button and message elements
+  const button = document.getElementById("verifyBtn");
+  const message = document.getElementById("message");
 
-button.addEventListener("click", () => {
-  const user = document.getElementById("username").value || "Player";
-  document.getElementById("message").textContent = `✅ ${user} is verified! Ribbit!`;
-});
+  // When the button is clicked
+  button.addEventListener("click", () => {
+    // Get username and password inputs
+    const user = document.getElementById("username").value || "Player";
+    const pass = document.getElementById("password").value || "Code";
+
+    // Always verify, no matter what they typed
+    message.textContent = `✅ ${user} has verified with password "${pass}"! Ribbit! 🐸`;
+  });
 </script>
+
+<input id="username" placeholder="Enter your username">
+<input id="password" type="password" placeholder="Enter password">
+<button id="verifyBtn">Verify</button>
+<p id="message"></p>
