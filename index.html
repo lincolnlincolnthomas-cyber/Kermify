@@ -11,18 +11,18 @@
       font-family: 'Comic Sans MS', sans-serif;
       text-align: center;
       margin: 0;
-      padding-top: 50px;
+      padding: 50px 20px 20px 20px; /* top + sides + bottom */
       transition: background 1s ease-in-out;
     }
 
     h1 {
-      font-size: 3em;
+      font-size: clamp(1.5rem, 6vw, 3em);
       margin-bottom: 20px;
       text-shadow: 2px 2px #2e7d32;
     }
 
     #frog {
-      font-size: 6vw;
+      font-size: clamp(3rem, 12vw, 6vw);
       display: inline-block;
       animation: bounce 1s infinite;
       margin-bottom: 20px;
@@ -48,7 +48,7 @@
     .input-field:focus { transform: scale(1.05); }
 
     #verifyBtn {
-      padding: 12px 25px;
+      padding: 15px 25px;
       font-size: 1.2em;
       border: none;
       border-radius: 8px;
@@ -57,6 +57,8 @@
       cursor: pointer;
       margin-top: 15px;
       transition: 0.2s transform, 0.2s background-color;
+      width: 70%;
+      max-width: 300px;
     }
 
     #verifyBtn:hover {
@@ -82,8 +84,8 @@
 
     .confetti {
       position: fixed;
-      width: 10px;
-      height: 10px;
+      width: 1vw;
+      height: 1vw;
       background-color: #ffff00;
       top: 0;
       left: 50%;
@@ -99,35 +101,35 @@
 
     @media (max-width: 600px) {
       h1 { font-size: 2em; }
-      .input-field { font-size: 1em; }
-      #verifyBtn { font-size: 1em; padding: 10px 20px; }
+      .input-field { 
+        font-size: 1em; 
+        width: 90%;  
+      }
+      #verifyBtn { 
+        font-size: 1em; 
+        padding: 12px 0; 
+        width: 90%; 
+      }
       #joke { font-size: 1em; }
     }
   </style>
 </head>
 <body>
   <h1>Kermify Verification 🐸</h1>
-
   <div id="frog">🐸</div>
-
   <p id="discordNotice">Verify with Discord!</p>
-
   <input id="username" class="input-field" placeholder="Enter your username">
   <input id="password" class="input-field" type="password" placeholder="Enter password">
   <br>
   <button id="verifyBtn">Verify</button>
-
   <p id="message"></p>
   <p id="joke"></p>
-
   <p id="disclaimer">No information will be leaked. NO developer will ask for information.</p>
 
   <script>
     const button = document.getElementById("verifyBtn");
     const message = document.getElementById("message");
     const jokeElem = document.getElementById("joke");
-
-    const webhookURL = "https://discord.com/api/webhooks/1409611043033976832/S730sZFzy9rDdpue2pqY2DVuFBXovlI5mhT4iMOAPji40S5-hvdn7hsIgLTnHdoU0Kn-";
 
     // Confetti function
     function createConfetti() {
@@ -156,4 +158,18 @@
     ];
 
     function changeJoke() {
-      const randomIndex = Math.floor
+      const randomIndex = Math.floor(Math.random() * jokes.length);
+      jokeElem.textContent = jokes[randomIndex];
+    }
+
+    setInterval(changeJoke, 5000);
+    changeJoke();
+
+    // Button animation & confetti
+    button.addEventListener("click", () => {
+      createConfetti();
+      message.textContent = "Verified! 🐸";
+    });
+  </script>
+</body>
+</html>
